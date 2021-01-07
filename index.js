@@ -54,8 +54,6 @@ var question3 = {
 }
 
 
-var timer;
-
 function renderHighscores() {
     var storedHighscores = JSON.parse(localStorage.getItem('highscores'));
 
@@ -64,7 +62,10 @@ function renderHighscores() {
     };
 }
 
+var timer;
+
 function init() {
+
     introEl.setAttribute('style', 'display: none;');
     quizBodyEl.setAttribute('style', 'display: inline-block;');
     quizTitleEl.textContent = question1.question;
@@ -136,36 +137,36 @@ function displayQuestion2() {
         if(quizQuestion1El.dataset.value === question2.Correct) {
             responseEl.setAttribute('style', 'display:inline-block');
             responseEl.setAttribute('value', 'Correct');
-            var questionTimer = setInterval(displayQuestion3,1000);
+            setTimeout(displayQuestion3, 1000);
         } else {
             responseEl.setAttribute('style', 'display:inline-block');
             responseEl.setAttribute('value', 'Wrong');
             timeLeft-=5;
-            var questionTimer = setInterval(displayQuestion3,1000);
+            setTimeout(displayQuestion3, 1000);
         }
     });
     quizQuestion2El.addEventListener('click', function() {
         if(quizQuestion2El.dataset.value === question2.Correct) {
             responseEl.setAttribute('style', 'display:inline-block');
             responseEl.setAttribute('value', 'Correct');
-            var questionTimer = setInterval(displayQuestion3,1000);
+            setTimeout(displayQuestion3, 1000);
         } else {
             responseEl.setAttribute('style', 'display:inline-block');
             responseEl.setAttribute('value', 'Wrong');
             timeLeft-=5;
-            var questionTimer = setInterval(displayQuestion3,1000);
+            setTimeout(displayQuestion3, 1000);
         }
     });
     quizQuestion3El.addEventListener('click', function() {
         if(quizQuestion3El.dataset.value === question2.Correct) {
             responseEl.setAttribute('style', 'display:inline-block');
             responseEl.setAttribute('value', 'Correct');
-            var questionTimer = setInterval(displayQuestion3,1000);
+            setTimeout(displayQuestion3, 1000);
         } else {
             responseEl.setAttribute('style', 'display:inline-block');
             responseEl.setAttribute('value', 'Wrong');
             timeLeft-=5;
-            var questionTimer = setInterval(displayQuestion3,1000);
+            setTimeout(displayQuestion3, 1000);
         }
     });
     quizQuestion4El.addEventListener('click', function() {
@@ -177,12 +178,13 @@ function displayQuestion2() {
             responseEl.setAttribute('style', 'display:inline-block');
             responseEl.setAttribute('value', 'Wrong');
             timeLeft-=5;
-            var questionTimer = setInterval(displayQuestion3,1000);
+            setTimeout(displayQuestion3, 1000);
         }
     });
 };
 
 function displayQuestion3() {
+    console.log(timer);
     responseEl.setAttribute('style', 'display: none');
     quizTitleEl.textContent = question3.question;
     quizQuestion1El.setAttribute('value', question3.A);
@@ -195,14 +197,14 @@ function displayQuestion3() {
             finaltime = timeLeft;
             responseEl.setAttribute('style', 'display:inline-block');
             responseEl.setAttribute('value', 'Correct');
-            clearInterval(timer);
+            timerStopper();
             displayHighscores();
         } else {
             finaltime = timeLeft-5;
             timerEl.innerHTML = finaltime;
             responseEl.setAttribute('style', 'display:inline-block');
             responseEl.setAttribute('value', 'Wrong');
-            clearInterval(timer);
+            timerStopper();
             displayHighscores();
         }
     });
@@ -211,7 +213,7 @@ function displayQuestion3() {
             finaltime = timeLeft;
             responseEl.setAttribute('style', 'display:inline-block');
             responseEl.setAttribute('value', 'Correct');
-            clearInterval(timer);
+            timerStopper();
             displayHighscores();
         } else {
             finaltime = timeLeft-5;
@@ -227,14 +229,14 @@ function displayQuestion3() {
             finaltime = timeLeft;
             responseEl.setAttribute('style', 'display:inline-block');
             responseEl.setAttribute('value', 'Correct');
-            clearInterval(timer);
+            timerStopper();
             displayHighscores();
         } else {
             finaltime = timeLeft-5;
             timerEl.innerHTML = finaltime;
             responseEl.setAttribute('style', 'display:inline-block');
             responseEl.setAttribute('value', 'Wrong');
-            clearInterval(timer);
+            timerStopper();
             displayHighscores();
         }
     });
@@ -243,14 +245,14 @@ function displayQuestion3() {
             finaltime = timeLeft+16
             responseEl.setAttribute('style', 'display:inline-block');
             responseEl.setAttribute('value', 'Correct');
-            clearInterval(timer);
+            timerStopper();
             displayHighscores();
         } else {
             finaltime = timeLeft-5;
             timerEl.innerHTML = finaltime;
             responseEl.setAttribute('style', 'display:inline-block');
             responseEl.setAttribute('value', 'Wrong');
-            clearInterval(timer);
+            timerStopper();
             displayHighscores();
         }
     });
@@ -273,28 +275,6 @@ function displayHighscores() {
     });
 }
 
-
-startOverBtnEl.addEventListener('click', function(){
-    highscoreEl.setAttribute('style', 'display: none;');
-    timeLeft = 60;
-    quizBodyEl.setAttribute('style', 'display: none;');
-    quizTitleEl.textContent = question1.question;
-    quizQuestion1El.setAttribute('value', '');
-    quizQuestion2El.setAttribute('value', '');
-    quizQuestion3El.setAttribute('value', '');
-    quizQuestion4El.setAttribute('value', '');
-    init();
-    timer = setInterval(function(){
-        timerEl.innerHTML = timeLeft;
-        timeLeft-=1;
-        if(timeLeft<0) {
-            clearInterval(timer);
-            quizBodyEl.setAttribute('style', 'display: none;');
-            highscoreEl.setAttribute("style", "display: inline-block");
-        }
-    },1000);
-});
-
 checkHighscoresEl.addEventListener('click', function(){
     console.log(highscoreArr);
     highscoreEl.setAttribute('style', 'display: none;');
@@ -308,15 +288,44 @@ checkHighscoresEl.addEventListener('click', function(){
         newUlEl.append(newLiEl);
         allHighscoresUlEl.append(newUlEl);
     };
-})
+});
+
 
 stBtnEl.addEventListener("click", function() {
+    highscoreEl.setAttribute('style', 'display: none;');
+    allHighscoresEl.setAttribute('style', 'display: none;');
     renderHighscores();
     console.log(highscoreArr);
     timeLeft = 60;
     init();
     timer = setInterval(function(){
         timerEl.innerHTML = timeLeft;
+        console.log('hey it is still going')
+        timeLeft-=1;
+        if(timeLeft<=0) {
+            finaltime = timeLeft;
+            clearInterval(timer);
+            quizBodyEl.setAttribute('style', 'display: none;');
+            highscoreEl.setAttribute("style", "display: inline-block");
+            displayHighscores();
+        }
+    },1000);
+});
+
+startOverBtnEl.addEventListener('click', function(){
+    timerStopper();
+    highscoreEl.setAttribute('style', 'display: none;');
+    timeLeft = 60;
+    quizBodyEl.setAttribute('style', 'display: none;');
+    quizTitleEl.textContent = question1.question;
+    quizQuestion1El.setAttribute('value', '');
+    quizQuestion2El.setAttribute('value', '');
+    quizQuestion3El.setAttribute('value', '');
+    quizQuestion4El.setAttribute('value', '');
+    init();
+    timer = setInterval(function(){
+        timerEl.innerHTML = timeLeft;
+        console.log('hey it is still going')
         timeLeft-=1;
         if(timeLeft<=0) {
             finaltime = timeLeft;
@@ -329,6 +338,7 @@ stBtnEl.addEventListener("click", function() {
 });
 
 allHighscoresBtnEl.addEventListener("click", function() {
+    timerStopper();
     highscoreEl.setAttribute('style', 'display: none;');
     allHighscoresEl.setAttribute('style', 'display: none;');
     renderHighscores();
@@ -337,13 +347,19 @@ allHighscoresBtnEl.addEventListener("click", function() {
     init();
     timer = setInterval(function(){
         timerEl.innerHTML = timeLeft;
+        console.log('hey it is still going')
         timeLeft-=1;
         if(timeLeft<=0) {
             finaltime = timeLeft;
             clearInterval(timer);
             quizBodyEl.setAttribute('style', 'display: none;');
             highscoreEl.setAttribute("style", "display: inline-block");
-            displayHighscores()
+            displayHighscores();
         }
     },1000);
 });
+
+
+function timerStopper () {
+    clearInterval(timer);
+}
