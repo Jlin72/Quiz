@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF8">
+        <title>Javascript quiz</title>
+    </head>
+    <body>
+        <header>
+            <h2>Time left: <span id='timer'></span></h1>
+        </header>
+        <main>
+            <aricle id='intro'>
+                <h1>Welcome to my javascript quiz</h1>
+                <button id="stBtn">Start!</button>
+            </aricle>
+            <article id='quiz_body' style="display: none;">
+                <h1 id='quiz_title'></h1>
+                <input type='button' value='' id='quizquestion1' class='input_btn' data-value="A">
+                <input type='button' value='' id='quizquestion2' class='input_btn' data-value="B">
+                <input type='button' value='' id='quizquestion3' class='input_btn' data-value="C">
+                <input type='button' value='' id='quizquestion4' class='input_btn' data-value="D">
+                <input type='text' value='' id='response' style="display: none;" readonly>
+            </article>
+            <article id="highscores" style="display: none;">
+                <h2>All done!</h2>
+                <p id='highscorePEl'></p>
+                <ul id='highscores_list'></ul>
+                <form id='highscoreForm'>
+                    <label for='initials'>Please enter your initials</label>
+                    <input type='text' placeholder='Enter initials' id='highscoreInput'>
+                    <input type='button' value='Submit' id='highscoreSubmitBtn'>
+                </form>
+                <div id="highscoreBtns" style="display: none;">
+                    <button id="startOverBtn">Start over</button>
+                    <button id='checkHighscores'>Check high scores</button>
+                </div>
+            </article>
+            <article id='allHighscores' style="display: none;">
+                <h2>Highscores</h2>
+                <!-- <div id="allHighscoresUl"></div> -->
+            </article>
+        </main>
+    </body>
+    <script src="./index.js"></script>
+</html>
